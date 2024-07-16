@@ -7,7 +7,7 @@ import java.lang.reflect.*;
 
 public class Agent {
 
-    public static void agentmain(String arg, Instrumentation instrumentation) throws Throwable {
+    public static void agentmain(String arg, Instrumentation instrumentation) throws Exception {
         Configuration config = Configuration.decode(arg);
         ClassLoader classLoader = config.getClassLoaderPolicy().find(instrumentation, config);
         config.getInjectionMethod().inject(classLoader, config);
@@ -21,22 +21,14 @@ public class Agent {
         }
     }
 
-    private static Object makeInstance(Class<?> clazz) {
+    private static Object makeInstance(Class<?> clazz) throws Exception{
         Constructor<?> lowestParamConstructor = null;
         for (Constructor<?> constructor : clazz.getDeclaredConstructors()) {
             if (lowestParamConstructor == null || constructor.getParameterCount() < lowestParamConstructor.getParameterCount())
                 lowestParamConstructor = constructor;
         }
         lowestParamConstructor.setAccessible(true);
-        try {
-            return lowestParamConstructor.newInstance(getParams(lowestParamConstructor));
-        } catch (InstantiationException e) {
-            throw new RuntimeException(e);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
-        } catch (InvocationTargetException e) {
-            throw new RuntimeException(e);
-        }
+        return lowestParamConstructor.newInstance(getParams(lowestParamConstructor));
     }
 
     private static Object[] getParams(Executable method) {
