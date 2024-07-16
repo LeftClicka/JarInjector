@@ -1,0 +1,36 @@
+plugins {
+    id 'java'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+    implementation(files('libs/console.jar'))
+    implementation files('libs/tools.jar')
+}
+
+task libBuild (type: Jar) {
+    manifest {
+        attributes (
+                'Manifest-Version':'1.0',
+                'Main-Class': 'de.leftclicka.Main',
+                'Agent-Class':'de.leftclicka.injection.Agent',
+                'Can-Redefine-Classes':'true',
+                'Can-Retransform-Classes':'true',
+        )
+    }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
+test {
+    useJUnitPlatform()
+}
