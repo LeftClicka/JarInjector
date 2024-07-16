@@ -20,3 +20,23 @@ A list of attributes, what they do and when they are required is as follows:
 * mainMethodPolicy: The policy that should be used to select an entry point method from your main class. Is either ```CUSTOM```, ```MAIN```, or ```ANNOTATED```. Must always be set.
 * mainMethod: The method name of the method that should be used as an entry point. Must only be set if ```mainMethodPolicy``` is equal to ```CUSTOM```.
 * mainMethodAnnotation: The fully qualified class name of the annotation class that be should to identify the main method within your main class. Must only be set if ```mainMethodPolicy``` is equals to ```ANNOTATED```.
+
+A more thorough explanation of what different values for different policies do is as follows:
+* ClassLoaderPolicy:
+  * ```RECOMMENDED```: Will use the system class loader.
+  * ```CUSTOM```: Will use a specified class' class loader. The classLoaderClass attribute is used to find that class. It cannot be a member of the jar that is being loaded.
+* InjectionMethod:
+  * ```DUMPCLASSES```: Will extract the classes from the jar and load them onto the class loader supplied by the class loader policy. The loaded jar can be deleted after the
+    injection process is complete. Classes from the loaded jar cannot access resources stored in the jar -  this will lead to crashes. They can access other resources present
+    in the target program.
+  * ```INJECTCLASSPATH```: Will append the jar to the class loader's search path. The loaded jar can only be deleted when the target program exits. Classes from the loaded jar can
+    access resources found in the jar.
+* MainClassPolicy:
+  * ```MANIFEST```: Will use the class found in the jar's manifest. The manifest attribute should be 'Main-Class'. Note that this will error if the jar to be loaded does not have a manifest
+    or the manifest does not have the main class attribute.
+  * ```CUSTOM```: Will use the class specified by the value of mainClass.
+  * ```ANNOTATED```: Will use the first class that is found to have the annotation specified by the value of mainClassAnnotation.
+* MainMethodPolicy:
+  * ```CUSTOM```: Will use the method with the name specified by the value of mainMethod. If the method is overloaded, the one with the least parameters will be used.
+  * ```MAIN```: Will use a method with the name 'main' that takes a String[] as its only parameter.
+  * ```ANNOTATED```: Will use the first method that is found to have the annotation specified by the value of mainMethodAnnotation.
