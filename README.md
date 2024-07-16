@@ -2,6 +2,9 @@
 -----
 This java library can be used to dynamically load and run a jar into an already running jvm.
 
+This tool exists simply as a proof of concept. I do not endorse or condone any malicious activity, cheating etc. Use this tool responsibly.
+Note that this tool will only work when the target vm allows dynamic agent attaching. This option is enabled by default.
+
 # How to use
 -----
 To use the library's functionality, pass a ```VirtualMachineDescriptor``` and a ```Configuration``` object to the
@@ -40,3 +43,19 @@ A more thorough explanation of what different values for different policies do i
   * ```CUSTOM```: Will use the method with the name specified by the value of mainMethod. If the method is overloaded, the one with the least parameters will be used.
   * ```MAIN```: Will use a method with the name 'main' that takes a String[] as its only parameter.
   * ```ANNOTATED```: Will use the first method that is found to have the annotation specified by the value of mainMethodAnnotation.
+
+Note that the jar containing a program that has injected a jar into a jvm cannot be deleted until all target programs have terminated.
+
+# Building
+-----
+This project uses gradle. Clone the repository and build the gradle model. The task ```build``` will build a jar containing only this tool. The task ```libBuild``` will build a jar containing
+this tool as well as a copy of tools.jar. Note that the java version you use to build this tool should match the java version that your target program runs on! The project purposefully renounces
+all fancy new java features to make sure it can be built and used with any version of java.
+
+# Exception handling
+-----
+Because of the hacky nature of this tool, a lot of different exceptions can be thrown both in the loader as well as in the target program. You can pass your own ```ExceptionHandler``` implementation 
+to the ```Injector.rum``` method. If something goes wrong within the target program, those exceptions will be thrown within the target program - and probably cause it to crash, because it was not
+developed with the option of a jar being dynamically loaded in mind. This goes for exceptions raised by the injection tool as well as exceptions that can occurr in the injected code. Therefore, it can
+be tricky to debug why injection does not work.
+When an error in the target program occurrs, an AgentInitializationException will be raised in the injector program. This can contain an error message that can at least give you a hint at what went wrong.
