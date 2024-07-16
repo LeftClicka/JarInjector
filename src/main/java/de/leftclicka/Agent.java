@@ -7,6 +7,10 @@ import java.lang.reflect.*;
 
 public class Agent {
 
+    /**
+     * Will extract data from the configuration and manage the loading process.
+     * Invoked by the target jvm when the agent is loaded
+     */
     public static void agentmain(String arg, Instrumentation instrumentation) throws Exception {
         Configuration config = Configuration.decode(arg);
         ClassLoader classLoader = config.getClassLoaderPolicy().find(instrumentation, config);

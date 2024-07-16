@@ -16,8 +16,16 @@ import java.util.jar.Manifest;
 import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 
+
+/**
+ * Dictates how a main class (that contains the main method) should be determined.
+ */
 public enum MainClassPolicy {
 
+    /**
+     * Use the class specified in the jar's manifest.
+     * Note that this will error if the jar has no manifest or the 'Main-Class' attribute is missing.
+     */
     MANIFEST {
         @Override
         public Class<?> find(ClassLoader classLoader, Configuration configuration) {
@@ -34,7 +42,13 @@ public enum MainClassPolicy {
                 throw new RuntimeException("If this threw something is messed up", e);
             }
         }
-    }, CUSTOM {
+    },
+    /**
+     * Will use a custom class specified by its fully qualified name.
+     * Note that the used configuration's customMainClass attribute must be set via setMainClass
+     * for this to work as that is the value that will be used as the class' name.
+     */
+    CUSTOM {
         @Override
         public Class<?> find(ClassLoader classLoader, Configuration configuration) {
             try {
@@ -43,7 +57,14 @@ public enum MainClassPolicy {
                 throw new RuntimeException("No such class: "+configuration.getMainClass(), e);
             }
         }
-    }, ANNOTATED {
+    },
+    /**
+     * Will find a class that is annotated by a certain annotation.
+     * Note that the mainClassAnnotation attribute of the configuration must be set for this
+     * to work. That attribute's value should be the fully qualified name of the annotation class.
+     * The annotation class cannot itself be a member of the jar that is being injected.
+     */
+    ANNOTATED {
         @Override
         public Class<?> find(ClassLoader classLoader, Configuration configuration) {
             String annotationClass = configuration.getMainClassAnnotation();

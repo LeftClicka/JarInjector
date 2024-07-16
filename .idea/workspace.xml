@@ -75,7 +75,7 @@
       <recent name="D:\Projects\JarInjector\libs" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Configuration">
+  <component name="RunManager" selected="Application.Injector">
     <configuration name="Configuration" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="de.leftclicka.configuration.Configuration" />
       <module name="JarInjector.main" />
@@ -89,8 +89,8 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="de.leftclicka.Main" />
+    <configuration name="Injector" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="de.leftclicka.Injector" />
       <module name="JarInjector.main" />
       <extension name="coverage">
         <pattern>
@@ -159,11 +159,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Injector" />
         <item itemvalue="Application.Configuration" />
         <item itemvalue="Gradle.JarInjector [dependencies]" />
         <item itemvalue="Application.Test" />
         <item itemvalue="Gradle.JarInjector [libBuild]" />
-        <item itemvalue="Application.Main" />
       </list>
     </recent_temporary>
   </component>
