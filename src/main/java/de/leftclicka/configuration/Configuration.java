@@ -17,7 +17,6 @@ public class Configuration {
     private MainMethodPolicy mainMethodPolicy;
     private String customMainMethod;
     private String mainMethodAnnotation;
-    private InjectionMethod injectionMethod;
 
 
     public Configuration setJarPath(String path) {
@@ -65,10 +64,6 @@ public class Configuration {
         return this;
     }
 
-    public Configuration setInjectionMethod(InjectionMethod injectionMethod) {
-        this.injectionMethod = injectionMethod;
-        return this;
-    }
 
     public String getJarPath() {
         return jarPath;
@@ -94,9 +89,6 @@ public class Configuration {
         return customMainMethod;
     }
 
-    public InjectionMethod getInjectionMethod() {
-        return injectionMethod;
-    }
 
     public String getMainClassAnnotation() {
         return mainClassAnnotation;
@@ -164,48 +156,6 @@ public class Configuration {
             throw new RuntimeException(ex);
         }
         return configuration;
-    }
-
-    /**
-     * A collection of configuration presets
-     */
-    public static class Presets {
-
-        /**
-         * Config for most normal target programs
-         */
-        public static final Configuration DEFAULT = new Configuration()
-                .setInjectionMethod(InjectionMethod.INJECTCLASSPATH)
-                .setClassLoaderPolicy(ClassLoaderPolicy.RECOMMENDED)
-                .setMainClassPolicy(MainClassPolicy.MANIFEST)
-                .setMainMethodPolicy(MainMethodPolicy.MAIN);
-
-        /**
-         * Config for 1.7.10 forge with class dumping
-         */
-        public static final Configuration MINECRAFT_FORGE_1_7_10_1 = new Configuration()
-                .setInjectionMethod(InjectionMethod.DUMPCLASSES)
-                .setClassLoaderPolicy(ClassLoaderPolicy.CUSTOM)
-                .setClassLoaderClass("net.minecraft.client.Minecraft")
-                .setMainClassPolicy(MainClassPolicy.ANNOTATED)
-                .setMainClassAnnotation("cpw.mods.fml.common.Mod")
-                .setMainMethodPolicy(MainMethodPolicy.ANNOTATED)
-                .setMainMethodAnnotation("cpw.mods.fml.common.Mod$EventHandler");
-
-        /**
-         * Config for 1.7.10 forge with class path injection
-         */
-        public static final Configuration MINECRAFT_FORGE_1_7_10_2 = new Configuration()
-                .setInjectionMethod(InjectionMethod.INJECTCLASSPATH)
-                .setClassLoaderPolicy(ClassLoaderPolicy.CUSTOM)
-                .setClassLoaderClass("net.minecraft.client.Minecraft")
-                .setMainClassPolicy(MainClassPolicy.ANNOTATED)
-                .setMainClassAnnotation("cpw.mods.fml.common.Mod")
-                .setMainMethodPolicy(MainMethodPolicy.ANNOTATED)
-                .setMainMethodAnnotation("cpw.mods.fml.common.Mod$EventHandler");
-
-        private Presets(){}
-
     }
 
 }

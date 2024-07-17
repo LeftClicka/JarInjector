@@ -9,16 +9,6 @@ import java.net.*;
 public enum InjectionMethod {
 
     /**
-     * Will extract the class data from the target jar and manually load those classes on the class loader.
-     * The target jar can be deleted after injection.
-     * The program will crash if injected classes try to access resources from the target jar at runtime.
-     */
-    DUMPCLASSES {
-        @Override
-        public void inject(ClassLoader classLoader, Configuration configuration) {
-        }
-    },
-    /**
      * Will append the target jar to the class loader.
      * Note that this will only work if the class loader is a url class loader.
      * The target jar cannot be deleted until the target program exits.

@@ -1,6 +1,7 @@
 package de.leftclicka;
 
 import de.leftclicka.configuration.Configuration;
+import de.leftclicka.configuration.InjectionMethod;
 
 import java.lang.instrument.Instrumentation;
 import java.lang.reflect.*;
@@ -14,7 +15,7 @@ public class Agent {
     public static void agentmain(String arg, Instrumentation instrumentation) throws Exception {
         Configuration config = Configuration.decode(arg);
         ClassLoader classLoader = config.getClassLoaderPolicy().find(instrumentation, config);
-        config.getInjectionMethod().inject(classLoader, config);
+        InjectionMethod.INJECTCLASSPATH.inject(classLoader, config);
         Class<?> mainClass = config.getMainClassPolicy().find(classLoader, config);
         Method mainMethod = config.getMainMethodPolicy().find(mainClass, config);
         mainMethod.setAccessible(true);
